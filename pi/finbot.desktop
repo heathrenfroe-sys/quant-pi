@@ -1,0 +1,7 @@
+﻿[Desktop Entry]
+Type=Application
+Name=FINbot
+Exec=/home/pi/quant-pi/.venv/bin/python -m quant_pi.main
+WorkingDirectory=/home/pi/quant-pi
+Hidden=false
+X-GNOME-Autostart-enabled=true

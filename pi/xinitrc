@@ -1,0 +1,18 @@
+﻿# ~/.xinitrc â€” runs when xinit starts X11 on the Pi DSI screen.
+# Used by the auto-start kiosk path: tty1 autologin â†’ bash_profile â†’ xinit.
+#
+# We deliberately do NOT launch a window manager. The Tk dashboard is
+# fullscreen and is the only window â€” we want it to BE the desktop.
+
+# Disable screen blanking + DPMS so the dashboard stays awake forever
+xset s off
+xset -dpms
+xset s noblank
+
+# Hide the mouse cursor when idle (touch-only kiosk feel).
+# unclutter is installed by install_pi.sh; falls back gracefully.
+unclutter -idle 0.5 -root &
+
+# Launch the dashboard. exec replaces the shell so when this exits, X exits too,
+# which causes systemd / .bash_profile to relaunch us.
+exec "$HOME/quant-pi/.venv/bin/python" -m quant_pi.main

@@ -1,0 +1,13 @@
+# Secrets & local config — copy .env.example / config.example.toml to set up
+.env
+config.toml
+
+# Runtime artifacts
+*.db
+*.db-journal
+*.log
+
+# Python
+.venv/
+__pycache__/
+*.pyc

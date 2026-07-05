@@ -1,0 +1,30 @@
+﻿[Unit]
+Description=FINbot â€” autonomous Claude-driven paper trader
+# Wait for the network so Alpaca + Anthropic are reachable on first boot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/quant-pi
+# Keep the service alive â€” restart on any crash, with a 5-second cooldown
+Restart=always
+RestartSec=5
+
+# X11 display the kiosk uses (started by xinit on tty1)
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/pi/.Xauthority"
+# Avoid Python buffering so journalctl shows live output
+Environment="PYTHONUNBUFFERED=1"
+
+# Activate the venv and run the dashboard. The path matches the install script.
+ExecStart=/home/pi/quant-pi/.venv/bin/python -m quant_pi.main
+
+# Log to journalctl â€” read with: journalctl -u finbot -f
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target

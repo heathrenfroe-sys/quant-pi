@@ -1,0 +1,53 @@
+﻿[brain]
+vault_path = "C:\\path\\to\\your\\Obsidian Vault"
+# Dedicated brain folder â€” curated copy of just the formulas this agent needs.
+# Edit notes inside this folder freely; drift from main vault is intentional.
+subfolder = "90 Brains/Quantberry-Pi"
+# Optional alternative: link-traversal from a root note (auto-expanding).
+# root_note = "Quantberry-Pi Paper Trader"
+# max_depth = 2
+
+[trading]
+# Empty list = NO watchlist restriction. Agent can buy any tradeable US stock.
+# Populate the list to constrain the universe (e.g. ["SPY", "QQQ", ...]).
+watchlist = []
+cycle_minutes = 120             # 2-hour RTH cadence â€” 3 cycles per day (10:00, 12:00, 14:00 ET)
+offhours_cycle_hours = 12       # twice daily off-hours scan
+# Hard caps â€” quality > quantity. Few high-conviction trades, big position sizes.
+sim_capital = 3000.0          # bot treats this as total equity (Alpaca paper is $100K)
+max_position_pct = 0.15       # 15% per position â€” concentrated, conviction-sized
+max_daily_trades = 3          # tight daily cap; agent must pick its best
+max_order_notional = 450.0    # ~15% of $3K â€” one conviction-sized trade
+max_trades_per_cycle = 1      # ONE trade per cycle, deeply researched
+auto_cancel_minutes = 30      # cancel any unfilled order older than this at cycle start
+
+# Trading windows (ET). Empty list = trade anytime.
+# Cycles still run every cycle_minutes for analysis; orders only execute INSIDE windows.
+# Format: "HH:MM-HH:MM" 24h ET. Examples below â€” uncomment to enable.
+trade_windows = []
+# trade_windows = ["09:35-09:55", "15:30-15:55"]   # open & close windows
+# trade_windows = ["10:00-15:00"]                   # midday only, avoid open/close volatility
+
+[agent]
+# Provider: "anthropic" (cloud, costs per call) or "ollama" (local, free, slower)
+provider = "anthropic"
+
+# Anthropic settings (used when provider = "anthropic")
+model = "claude-sonnet-4-6"
+
+# Ollama settings (used when provider = "ollama")
+ollama_host = "http://localhost:11434"
+ollama_model = "mistral-nemo:12b"  # Q4_0 â€” 7 GB. Tight on Pi 8GB but viable as a sole-purpose box with swap.
+
+max_tokens = 8192   # bigger budget for deep multi-step analysis per cycle
+
+[display]
+# Pi target screen: Hosyond 5" 800x480 IPS DSI touchscreen
+width = 800
+height = 480
+poll_seconds = 1               # 1s â€” feels live, well under Alpaca's 200/min rate limit
+always_on_top = false  # set true on PC for always-visible preview
+sleep_after_minutes = 2.5  # tablet-style sleep â€” tap to wake; 0 = never sleep
+
+[store]
+db_path = "quant_pi.db"
